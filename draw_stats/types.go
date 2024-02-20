@@ -2,6 +2,14 @@ package draw_stats
 
 import "time"
 
+// all possible tag type strings
+type TagType string
+const (
+    ITEM_TAG TagType="item"
+    CATEGORY_TAG TagType="category"
+    DATE_TAG TagType="date"
+)
+
 // identifier tags for a time event.
 // key: name of the tag
 // val: the tag value
@@ -39,7 +47,7 @@ type TimeEventAnalysis struct {
 // analysis of a list of events. focusing on a single tag, the events are grouped by the tag's
 // unique values. then, for each unique value, stats are calculated
 type TagBreakdown struct {
-    Tag string
+    Tag TagType
 
     // analysis for each tag value
     // key: tag value
