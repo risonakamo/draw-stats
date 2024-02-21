@@ -1,4 +1,4 @@
-module draw-tracking-stats
+module time-stats
 
 go 1.22.0
 

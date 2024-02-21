@@ -1,6 +1,6 @@
 // analysis functions
 
-package draw_stats
+package time_stats
 
 import (
 	"fmt"
