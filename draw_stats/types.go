@@ -10,21 +10,27 @@ const (
     DATE_TAG TagType="date"
 )
 
+type TagValue string
+
 // identifier tags for a time event.
 // key: name of the tag
 // val: the tag value
-type TagsDict map[string]string
+type TagsDict map[TagType]TagValue
 
-// typed version of tags map
-type TagsDictTyped struct {
-    Item string
-    Category string
-    Date time.Time
-}
+// time events grouped by tag value. which tag the values come from is kept
+// seperate
+// key: a unique tag value
+// val: list of events, all of which have the particular tag value
+type TimeEventsByTagValue map[TagValue][]TimeEvent
+
+// analysis for each tag value
+// key: tag value
+// val: the analysis
+type TagValueAnalysisDict map[TagValue]TimeEventAnalysis
 
 // a single event. a full log is just a list of time events
 type TimeEvent struct {
-    Tags TagsDictTyped
+    Tags TagsDict
 
     Start time.Time
     End time.Time
@@ -52,5 +58,10 @@ type TagBreakdown struct {
     // analysis for each tag value
     // key: tag value
     // val: the analysis
-    ValuesAnalysis map[string]TimeEventAnalysis
+    ValuesAnalysis TagValueAnalysisDict
+
+    // the time events keyed by their values
+    // key: the tag value
+    // val: the time events that have the particular value
+    KeyedEvents TimeEventsByTagValue
 }
