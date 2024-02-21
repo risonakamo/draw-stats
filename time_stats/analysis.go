@@ -10,7 +10,7 @@ import (
 )
 
 // analyse list of time events
-func analyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
+func AnalyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
 	var totalTime time.Duration=time.Duration(0)
 
 	for i := range events {
@@ -37,7 +37,7 @@ func genTagBreakdown(events []TimeEvent,targetTag TagType) TagBreakdown {
 
     var tagValue TagValue
     for tagValue = range keyedEvents {
-        analysisDict[tagValue]=analyseTimeEvents(keyedEvents[tagValue])
+        analysisDict[tagValue]=AnalyseTimeEvents(keyedEvents[tagValue])
     }
 
     return TagBreakdown {

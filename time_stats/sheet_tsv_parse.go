@@ -8,8 +8,6 @@ import (
 	"io"
 	"os"
 	"time"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 // parse sheet tsv format
@@ -19,7 +17,10 @@ import (
 // [2] -> start time
 // [3] -> end time
 // [4] -> duration, but only for confirmation between diffing start/end
+//
 // any other lines are ignored.
+// the first line must have item and category. after that, lines that omit
+// item or category will use the previous row's item or category
 func ParseSheetTsv(filepath string) []TimeEvent {
     var file *os.File
     var e error
@@ -35,6 +36,8 @@ func ParseSheetTsv(filepath string) []TimeEvent {
     var lastItem string=""
     var lastCategory string=""
 
+    var timeEvents []TimeEvent=[]TimeEvent{}
+
     for {
         var record []string
         record,e=reader.Read()
@@ -43,35 +46,51 @@ func ParseSheetTsv(filepath string) []TimeEvent {
             break
         }
 
-        if len(record)<5 {
-            fmt.Println("not enough lines in record, need 5 lines")
+        if len(record)<4 {
+            fmt.Println("not enough items in record, need 4 items")
             fmt.Println("the record:")
-            spew.Dump(record)
+            fmt.Println(record)
         }
 
+
+
+        // --- grab row items into vars ---
         var item string=record[0]
         var category string=record[1]
         var startStr string=record[2]
         var endStr string=record[3]
-        var durationStr string=record[4]
 
+
+
+        // --- time calculations ---
         var startTime time.Time
         var endTime time.Time
+
+        var calculatedDuration time.Duration
 
         startTime,e=parseSheetTsvTime(startStr)
 
         if e!=nil {
-            panic(e)
+            fmt.Println("failed to parse start time of row. skipping")
+            fmt.Println("the row:")
+            fmt.Println(record)
+            continue
         }
 
         endTime,e=parseSheetTsvTime(endStr)
 
         if e!=nil {
-            panic(e)
+            fmt.Println("failed to parse end time of row. skipping")
+            fmt.Println("the row:")
+            fmt.Println(record)
+            continue
         }
 
+        calculatedDuration=endTime.Sub(startTime)
 
 
+
+        // --- tag calculations ---
         // ensure we are able to replace the item and category with the previous
         // values if we need to. if we can't then that's an issue with the data.
         if len(lastItem)==0 && len(item)==0 {
@@ -81,7 +100,6 @@ func ParseSheetTsv(filepath string) []TimeEvent {
         if len(lastCategory)==0 && len(category)==0 {
             panic("first item is missing category tag")
         }
-
 
         // fill in the item and category with the previous item or category, if either
         // of them does not exist in this current row
@@ -93,15 +111,27 @@ func ParseSheetTsv(filepath string) []TimeEvent {
             category=lastCategory
         }
 
-
         // fill in the last item/category with the current
         lastItem=item
         lastCategory=category
 
 
+
+        // --- final event creation ---
+        timeEvents=append(timeEvents,TimeEvent {
+            Tags: TagsDict{
+                ITEM_TAG:TagValue(item),
+                CATEGORY_TAG:TagValue(category),
+            },
+
+            Start: startTime,
+            End: endTime,
+
+            Duration: calculatedDuration,
+        })
     }
 
-    return []TimeEvent{}
+    return timeEvents
 }
 
 // parse special time format from Sheet Tsv time data
