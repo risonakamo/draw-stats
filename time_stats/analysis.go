@@ -22,8 +22,6 @@ func AnalyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
         AverageTime: time.Duration(
             totalTime.Nanoseconds()/int64(len(events)),
         ),
-
-        Events: events,
     }
 }
 
@@ -44,7 +42,7 @@ func genTagBreakdown(events []TimeEvent,targetTag TagType) TagBreakdown {
         Tag: targetTag,
 
         ValuesAnalysis: analysisDict,
-        KeyedEvents: keyedEvents,
+        // KeyedEvents: keyedEvents,
     }
 }
 

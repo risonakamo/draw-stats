@@ -50,6 +50,7 @@ func ParseSheetTsv(filepath string) []TimeEvent {
             fmt.Println("not enough items in record, need 4 items")
             fmt.Println("the record:")
             fmt.Println(record)
+            continue
         }
 
 
