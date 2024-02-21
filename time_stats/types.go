@@ -67,4 +67,10 @@ type TagBreakdown struct {
     // key: the tag value
     // val: the time events that have the particular value
     // KeyedEvents TimeEventsByTagValue
+
+    // average time per unique value in the values analysis
+    AverageTime time.Duration
+
+    // total time of all the items in this breakdown
+    TotalTime time.Duration
 }

@@ -13,5 +13,8 @@ func Test_parseSheetTsv(t *testing.T) {
 
 	var analysis time_stats.TimeEventAnalysis=time_stats.AnalyseTimeEvents(result)
 
+	var tagAnalysis time_stats.TagBreakdownsDict=time_stats.TagBreakdownForAllTags(result)
+
 	spew.Dump(analysis)
+	spew.Dump(tagAnalysis)
 }

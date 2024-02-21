@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	mapset "github.com/deckarep/golang-set/v2"
 )
 
 // analyse list of time events
@@ -25,13 +26,26 @@ func AnalyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
     }
 }
 
+// for a list of events, generate tag breakdowns for all of the seen tags
+func TagBreakdownForAllTags(events []TimeEvent) TagBreakdownsDict {
+    var allTags []TagType=findAllTags(events)
+
+    var breakdowns TagBreakdownsDict=make(TagBreakdownsDict)
+
+    for i := range allTags {
+        breakdowns[allTags[i]]=genTagBreakdown(events,allTags[i])
+    }
+
+    return breakdowns
+}
+
 // generate a tag breakdown from a list of events for a certain target tag.
 // all events must have the tag. events without the tag will print out a warning and
 // be excluded from the breakdown
 func genTagBreakdown(events []TimeEvent,targetTag TagType) TagBreakdown {
     var keyedEvents TimeEventsByTagValue=groupEventsByTagValue(events,targetTag)
 
-    var analysisDict TagValueAnalysisDict
+    var analysisDict TagValueAnalysisDict=make(TagValueAnalysisDict)
 
     var tagValue TagValue
     for tagValue = range keyedEvents {
@@ -93,12 +107,18 @@ func filterByTag(events []TimeEvent,tag TagType,tagValue TagValue) []TimeEvent {
     return events
 }
 
-// for a list of events, generate tag breakdowns for all of the existing tags
-func tagBreakdownForAllTags(events []TimeEvent) TagBreakdownsDict {
-
-}
-
 // of a list of events, get all unique tag types
 func findAllTags(events []TimeEvent) []TagType {
+    var seenTypes mapset.Set[TagType]=mapset.NewSet[TagType]()
 
+    // for all events
+    for i := range events {
+        // for all tags in event
+        var eventTag TagType
+        for eventTag = range events[i].Tags {
+            seenTypes.Add(eventTag)
+        }
+    }
+
+    return seenTypes.ToSlice()
 }
