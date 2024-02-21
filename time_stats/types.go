@@ -28,6 +28,9 @@ type TimeEventsByTagValue map[TagValue][]TimeEvent
 // val: the analysis
 type TagValueAnalysisDict map[TagValue]TimeEventAnalysis
 
+// collection of tag breakdowns. associated with a list of events
+type TagBreakdownsDict map[TagType]TagBreakdown
+
 // a single event. a full log is just a list of time events
 type TimeEvent struct {
     Tags TagsDict

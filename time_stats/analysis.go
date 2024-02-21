@@ -76,3 +76,29 @@ func groupEventsByTagValue(events []TimeEvent,targetTag TagType) TimeEventsByTag
 
     return keyedEvents
 }
+
+// filter list of events to only those with a tag with the specified value
+func filterByTag(events []TimeEvent,tag TagType,tagValue TagValue) []TimeEvent {
+    var results []TimeEvent
+
+    for i := range events {
+        var itemTagValue TagValue
+        var exists bool
+        itemTagValue,exists=events[i].Tags[tag]
+        if exists && itemTagValue==tagValue {
+            results=append(results,events[i])
+        }
+    }
+
+    return events
+}
+
+// for a list of events, generate tag breakdowns for all of the existing tags
+func tagBreakdownForAllTags(events []TimeEvent) TagBreakdownsDict {
+
+}
+
+// of a list of events, get all unique tag types
+func findAllTags(events []TimeEvent) []TagType {
+
+}
