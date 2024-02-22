@@ -39,6 +39,20 @@ func TagBreakdownForAllTags(events []TimeEvent) TagBreakdownsDict {
     return breakdowns
 }
 
+// filter list of time events based on given filter dict. check filter dict
+// docs for how to choose filters
+func FilterEvents(events []TimeEvent,filter FilterDict) []TimeEvent {
+    var filteredEvents []TimeEvent=events
+
+    var filterTag TagType
+    var filterTagValue TagValue
+    for filterTag,filterTagValue = range filter {
+        filteredEvents=filterByTag(events,filterTag,filterTagValue)
+    }
+
+    return filteredEvents
+}
+
 // generate a tag breakdown from a list of events for a certain target tag.
 // all events must have the tag. events without the tag will print out a warning and
 // be excluded from the breakdown
@@ -104,21 +118,7 @@ func filterByTag(events []TimeEvent,tag TagType,tagValue TagValue) []TimeEvent {
         }
     }
 
-    return events
-}
-
-// filter list of time events based on given filter dict. check filter dict
-// docs for how to choose filters
-func filterEvents(events []TimeEvent,filter FilterDict) []TimeEvent {
-    var filteredEvents []TimeEvent=events
-
-    var filterTag TagType
-    var filterTagValue TagValue
-    for filterTag,filterTagValue = range filter {
-        filteredEvents=filterByTag(events,filterTag,filterTagValue)
-    }
-
-    return filteredEvents
+    return results
 }
 
 // of a list of events, get all unique tag types
