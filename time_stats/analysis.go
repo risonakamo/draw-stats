@@ -107,6 +107,20 @@ func filterByTag(events []TimeEvent,tag TagType,tagValue TagValue) []TimeEvent {
     return events
 }
 
+// filter list of time events based on given filter dict. check filter dict
+// docs for how to choose filters
+func filterEvents(events []TimeEvent,filter FilterDict) []TimeEvent {
+    var filteredEvents []TimeEvent=events
+
+    var filterTag TagType
+    var filterTagValue TagValue
+    for filterTag,filterTagValue = range filter {
+        filteredEvents=filterByTag(events,filterTag,filterTagValue)
+    }
+
+    return filteredEvents
+}
+
 // of a list of events, get all unique tag types
 func findAllTags(events []TimeEvent) []TagType {
     var seenTypes mapset.Set[TagType]=mapset.NewSet[TagType]()
