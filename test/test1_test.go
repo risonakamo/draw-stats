@@ -21,6 +21,7 @@ func Test_test1(t *testing.T) {
 	spew.Dump(tagAnalysis)
 }
 
+// general test2
 func Test_test2(t *testing.T) {
     var result []time_stats.TimeEvent=time_stats.ParseSheetTsv("data1.tsv")
 
@@ -44,9 +45,15 @@ func Test_test2(t *testing.T) {
 	fmt.Println()
 	spew.Dump(item1TagAnalysis)
 
-	// pretty.Println(item1analysis)
-	// pretty.Println(item1TagAnalysis)
-
 	data,_:=json.MarshalIndent(item1TagAnalysis,""," ")
 	fmt.Println(string(data))
+}
+
+// test adding date tag to events
+func Test_dateTag(t *testing.T) {
+	var result []time_stats.TimeEvent=time_stats.ParseSheetTsv("data1.tsv")
+
+	time_stats.AddDateTags(result)
+
+	spew.Dump(result)
 }

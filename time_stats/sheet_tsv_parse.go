@@ -136,10 +136,25 @@ func ParseSheetTsv(filepath string) []TimeEvent {
 }
 
 // parse special time format from Sheet Tsv time data
+// if the year is 0000, gives the year the current year
+// todo: when have example of data that has year, will need to special detect that
 func parseSheetTsvTime(timestr string) (time.Time,error) {
     var parsedTime time.Time
     var e error
     parsedTime,e=time.Parse("01/02 15:04",timestr)
+
+    if parsedTime.Year()==0 {
+        parsedTime=time.Date(
+            time.Now().Year(),
+            parsedTime.Month(),
+            parsedTime.Day(),
+            parsedTime.Hour(),
+            parsedTime.Minute(),
+            parsedTime.Second(),
+            parsedTime.Nanosecond(),
+            parsedTime.Location(),
+        )
+    }
 
     return parsedTime,e
 }
