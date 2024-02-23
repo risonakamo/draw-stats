@@ -1,6 +1,7 @@
 package time_stats
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time-stats/time_stats"
@@ -45,4 +46,7 @@ func Test_test2(t *testing.T) {
 
 	// pretty.Println(item1analysis)
 	// pretty.Println(item1TagAnalysis)
+
+	data,_:=json.MarshalIndent(item1TagAnalysis,""," ")
+	fmt.Println(string(data))
 }

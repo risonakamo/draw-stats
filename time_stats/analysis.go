@@ -66,11 +66,17 @@ func genTagBreakdown(events []TimeEvent,targetTag TagType) TagBreakdown {
         analysisDict[tagValue]=AnalyseTimeEvents(keyedEvents[tagValue])
     }
 
+    var totalTime time.Duration=AnalyseTimeEvents(events).TotalTime
+    var avgTimePerTagValue=time.Duration(totalTime.Nanoseconds()/int64(len(analysisDict)))
+
     return TagBreakdown {
         Tag: targetTag,
 
         ValuesAnalysis: analysisDict,
         // KeyedEvents: keyedEvents,
+
+        AverageTime: avgTimePerTagValue,
+        TotalTime: totalTime,
     }
 }
 
