@@ -57,3 +57,13 @@ func Test_dateTag(t *testing.T) {
 
 	spew.Dump(result)
 }
+
+// tag breakdown with dates
+func Test_dateTagAnalysis(t *testing.T) {
+	var events []time_stats.TimeEvent=time_stats.ParseSheetTsv("data3.tsv")
+	time_stats.AddDateTags(events)
+
+	var breakdown time_stats.TagBreakdownsDict=time_stats.TagBreakdownForAllTags(events)
+
+	spew.Dump(breakdown)
+}
