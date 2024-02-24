@@ -15,6 +15,14 @@ func main() {
         EnablePrintRoutes:false,
     })
 
+
+    // --- apis ---
+    app.Get("/data-names",func (c *fiber.Ctx) error {
+
+    })
+
+
+    // --- static ---
     app.Static("/",filepath.Join(here,"../time-stats-web/build"))
 
     app.Listen(":4200")

@@ -1,4 +1,4 @@
-package time_stats
+package test
 
 import (
 	"encoding/json"
