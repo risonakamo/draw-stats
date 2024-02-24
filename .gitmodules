@@ -1,0 +1,3 @@
+[submodule "time-stats-web"]
+	path = time-stats-web
+	url = https://github.com/risonakamo/time-stats-web.git

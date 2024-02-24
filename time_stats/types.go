@@ -60,7 +60,7 @@ type TimeEventAnalysis struct {
     TotalTime time.Duration
     AverageTime time.Duration
 
-    // Events []TimeEvent
+    EarliestEventDate time.Time
 }
 
 // analysis of a list of events. focusing on a single tag, the events are grouped by the tag's
@@ -72,11 +72,6 @@ type TagBreakdown struct {
     // key: tag value
     // val: the analysis
     ValuesAnalysis TagValueAnalysisDict
-
-    // the time events keyed by their values
-    // key: the tag value
-    // val: the time events that have the particular value
-    // KeyedEvents TimeEventsByTagValue
 
     // average time per unique value in the values analysis
     AverageTime time.Duration
