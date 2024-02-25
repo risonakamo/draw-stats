@@ -14,6 +14,25 @@ type MetadataFile map[string]string
 // display name comes from metadata. if no metadata for the particular filename,
 // then the filename is the displayname
 type DataFileInfo struct {
-    Filename string
-    DisplayName string
+    Filename string `json:"filename"`
+    DisplayName string `json:"displayName"`
+}
+
+// a request to filter the data on the specified tag and tag value. can be stacked in a
+// list
+type TagFilter struct {
+    Tag string `json:"tag"`
+    Value string `json:"value"`
+}
+
+// request from front end for a data file. includes filters list
+type GetDataRequest struct {
+    Filename string `json:"filename"`
+    Filters []TagFilter `json:"filters"`
+}
+
+// response to request for data
+type GetDataResponse struct {
+    TopAnalysis TimeEventAnalysis `json:"topAnalysis"`
+    TagsAnalysis TagBreakdownsDict `json:"tagsAnalysis"`
 }

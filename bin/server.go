@@ -27,6 +27,32 @@ func main() {
         return c.JSON(datalist)
     })
 
+    // return data from a requested data file. generates analysis on the data file.
+    // todo: missing filtering
+    app.Post("/get-data",func (c *fiber.Ctx) error {
+        var body time_stats.GetDataRequest
+        var e error=c.BodyParser(&body)
+
+        if e!=nil {
+            panic(e)
+        }
+
+        var fullFilePath string=filepath.Join(dataDir,body.Filename)
+
+        var timeEvents []time_stats.TimeEvent=time_stats.ParseSheetTsv(fullFilePath)
+
+        var analysis time_stats.TimeEventAnalysis=time_stats.AnalyseTimeEvents(timeEvents)
+
+        var tagAnalysis time_stats.TagBreakdownsDict=time_stats.TagBreakdownForAllTags(timeEvents)
+
+        var response time_stats.GetDataResponse=time_stats.GetDataResponse {
+            TopAnalysis: analysis,
+            TagsAnalysis: tagAnalysis,
+        }
+
+        return c.JSON(response)
+    })
+
 
     // --- static ---
     app.Static("/",filepath.Join(here,"../time-stats-web/build"))

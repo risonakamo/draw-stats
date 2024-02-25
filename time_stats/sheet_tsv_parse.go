@@ -27,6 +27,7 @@ func ParseSheetTsv(filepath string) []TimeEvent {
     file,e=os.Open(filepath)
 
     if e!=nil {
+        fmt.Println("failed to open sheet tsv:",filepath)
         panic(e)
     }
 

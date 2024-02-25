@@ -57,25 +57,25 @@ type TimeEvent struct {
 // ---- collection structures ----
 // analysis of a list of time events. corresponds with a list of time events
 type TimeEventAnalysis struct {
-    TotalTime time.Duration
-    AverageTime time.Duration
+    TotalTime time.Duration `json:"totalTime"`
+    AverageTime time.Duration `json:"averageTime"`
 
-    EarliestEventDate time.Time
+    EarliestEventDate time.Time `json:"earliestEventDate"`
 }
 
 // analysis of a list of events. focusing on a single tag, the events are grouped by the tag's
 // unique values. then, for each unique value, stats are calculated
 type TagBreakdown struct {
-    Tag TagType
+    Tag TagType `json:"tag"`
 
     // analysis for each tag value
     // key: tag value
     // val: the analysis
-    ValuesAnalysis TagValueAnalysisDict
+    ValuesAnalysis TagValueAnalysisDict `json:"valuesAnalysis"`
 
     // average time per unique value in the values analysis
-    AverageTime time.Duration
+    AverageTime time.Duration `json:"averageTime"`
 
     // total time of all the items in this breakdown
-    TotalTime time.Duration
+    TotalTime time.Duration `json:"totalTime"`
 }
