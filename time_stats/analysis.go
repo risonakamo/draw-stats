@@ -23,6 +23,7 @@ func AnalyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
         AverageTime: time.Duration(
             totalTime.Nanoseconds()/int64(len(events)),
         ),
+        EarliestEventDate: findEarliestEvent(events).Start,
     }
 }
 
@@ -141,4 +142,22 @@ func findAllTags(events []TimeEvent) []TagType {
     }
 
     return seenTypes.ToSlice()
+}
+
+// return the event from a list of time events that has the earliest
+// date
+func findEarliestEvent(events []TimeEvent) TimeEvent {
+    if len(events)==0 {
+        panic("no events to find earliest")
+    }
+
+    var earliest TimeEvent=events[0]
+
+    for i := range events {
+        if events[i].Start.Before(earliest.Start) {
+            earliest=events[i]
+        }
+    }
+
+    return earliest
 }
