@@ -39,7 +39,9 @@ func main() {
 
         var fullFilePath string=filepath.Join(dataDir,body.Filename)
 
-        var timeEvents []time_stats.TimeEvent=time_stats.ParseSheetTsv(fullFilePath)
+        var timeEvents []time_stats.TimeEvent=time_stats.ParseSheetTsv(fullFilePath,true)
+
+        time_stats.AddDateTags(timeEvents)
 
         var analysis time_stats.TimeEventAnalysis=time_stats.AnalyseTimeEvents(timeEvents)
 

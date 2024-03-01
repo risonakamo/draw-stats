@@ -21,7 +21,7 @@ import (
 // any other lines are ignored.
 // the first line must have item and category. after that, lines that omit
 // item or category will use the previous row's item or category
-func ParseSheetTsv(filepath string) []TimeEvent {
+func ParseSheetTsv(filepath string,suppressRowError bool) []TimeEvent {
     var file *os.File
     var e error
     file,e=os.Open(filepath)
@@ -73,9 +73,11 @@ func ParseSheetTsv(filepath string) []TimeEvent {
         startTime,e=parseSheetTsvTime(startStr)
 
         if e!=nil {
-            fmt.Println("failed to parse start time of row. skipping")
-            fmt.Println("the row:")
-            fmt.Println(record)
+            if !suppressRowError {
+                fmt.Println("failed to parse start time of row. skipping")
+                fmt.Println("the row:")
+                fmt.Println(record)
+            }
             continue
         }
 
