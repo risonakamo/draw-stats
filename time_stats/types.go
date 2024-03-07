@@ -61,6 +61,8 @@ type TimeEventAnalysis struct {
     AverageTime time.Duration `json:"averageTime"`
 
     EarliestEventDate time.Time `json:"earliestEventDate"`
+
+    LatestEventData time.Time `json:"latestEventDate"`
 }
 
 // analysis of a list of events. focusing on a single tag, the events are grouped by the tag's

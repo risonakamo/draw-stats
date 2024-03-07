@@ -24,6 +24,7 @@ func AnalyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
             totalTime.Nanoseconds()/int64(len(events)),
         ),
         EarliestEventDate: findEarliestEvent(events).Start,
+        LatestEventData: findLatestEvent(events).Start,
     }
 }
 
@@ -160,4 +161,21 @@ func findEarliestEvent(events []TimeEvent) TimeEvent {
     }
 
     return earliest
+}
+
+// find the latest event from time events
+func findLatestEvent(events []TimeEvent) TimeEvent {
+    if len(events)==0 {
+        panic("no events to find latest")
+    }
+
+    var latest TimeEvent=events[0]
+
+    for i := range events {
+        if events[i].Start.After(latest.Start) {
+            latest=events[i]
+        }
+    }
+
+    return latest
 }
