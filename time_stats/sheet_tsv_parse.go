@@ -21,14 +21,14 @@ import (
 // any other lines are ignored.
 // the first line must have item and category. after that, lines that omit
 // item or category will use the previous row's item or category
-func ParseSheetTsv(filepath string,suppressRowError bool) []TimeEvent {
+func ParseSheetTsv(filepath string,suppressRowError bool) ([]TimeEvent,error) {
     var file *os.File
     var e error
     file,e=os.Open(filepath)
 
     if e!=nil {
         fmt.Println("failed to open sheet tsv:",filepath)
-        panic(e)
+        return []TimeEvent{},fmt.Errorf("failed to open sheet tsv: %v",e)
     }
 
     var reader *csv.Reader=csv.NewReader(file)
@@ -135,7 +135,7 @@ func ParseSheetTsv(filepath string,suppressRowError bool) []TimeEvent {
         })
     }
 
-    return timeEvents
+    return timeEvents,nil
 }
 
 // parse special time format from Sheet Tsv time data
