@@ -49,7 +49,7 @@ func FilterEvents(events []TimeEvent,filter FilterDict) []TimeEvent {
     var filterTag TagType
     var filterTagValue TagValue
     for filterTag,filterTagValue = range filter {
-        filteredEvents=filterByTag(events,filterTag,filterTagValue)
+        filteredEvents=filterByTag(filteredEvents,filterTag,filterTagValue)
     }
 
     return filteredEvents

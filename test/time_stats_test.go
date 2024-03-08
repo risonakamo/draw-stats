@@ -11,7 +11,13 @@ import (
 
 // general test 1
 func Test_test1(t *testing.T) {
-    var result []time_stats.TimeEvent=time_stats.ParseSheetTsv("data1.tsv")
+	var e error
+    var result []time_stats.TimeEvent
+	result,e=time_stats.ParseSheetTsv("data1.tsv",false)
+
+	if e!=nil {
+		t.Error(e)
+	}
 
 	var analysis time_stats.TimeEventAnalysis=time_stats.AnalyseTimeEvents(result)
 
@@ -23,7 +29,13 @@ func Test_test1(t *testing.T) {
 
 // general test2
 func Test_test2(t *testing.T) {
-    var result []time_stats.TimeEvent=time_stats.ParseSheetTsv("data1.tsv")
+	var e error
+    var result []time_stats.TimeEvent
+	result,e=time_stats.ParseSheetTsv("data1.tsv",false)
+
+	if e!=nil {
+		t.Error(e)
+	}
 
 	fmt.Println("total",len(result))
 
@@ -51,7 +63,13 @@ func Test_test2(t *testing.T) {
 
 // test adding date tag to events
 func Test_dateTag(t *testing.T) {
-	var result []time_stats.TimeEvent=time_stats.ParseSheetTsv("data1.tsv")
+	var e error
+	var result []time_stats.TimeEvent
+	result,e=time_stats.ParseSheetTsv("data1.tsv",false)
+
+	if e!=nil {
+		t.Error(e)
+	}
 
 	time_stats.AddDateTags(result)
 
@@ -60,7 +78,14 @@ func Test_dateTag(t *testing.T) {
 
 // tag breakdown with dates
 func Test_dateTagAnalysis(t *testing.T) {
-	var events []time_stats.TimeEvent=time_stats.ParseSheetTsv("data3.tsv")
+	var e error
+	var events []time_stats.TimeEvent
+	events,e=time_stats.ParseSheetTsv("data3.tsv",false)
+
+	if e!=nil {
+		t.Error(e)
+	}
+
 	time_stats.AddDateTags(events)
 
 	var breakdown time_stats.TagBreakdownsDict=time_stats.TagBreakdownForAllTags(events)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"path/filepath"
 	"runtime"
 	"time-stats/time_stats"
@@ -28,7 +29,6 @@ func main() {
     })
 
     // return data from a requested data file. generates analysis on the data file.
-    // todo: missing filtering
     app.Post("/get-data",func (c *fiber.Ctx) error {
         var body time_stats.GetDataRequest
         var e error=c.BodyParser(&body)
@@ -43,7 +43,18 @@ func main() {
         timeEvents,e=time_stats.ParseSheetTsv(fullFilePath,true)
 
         if e!=nil {
+            fmt.Println("failed to parse sheet tsv")
             return e
+        }
+
+        timeEvents=time_stats.FilterEvents(
+            timeEvents,
+            time_stats.TagFiltersListToDict(body.Filters),
+        )
+
+        if len(timeEvents)==0 {
+            fmt.Println("filter resulted in no events")
+            return fmt.Errorf("no events")
         }
 
         time_stats.AddDateTags(timeEvents)
