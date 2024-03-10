@@ -25,6 +25,7 @@ func ParseSheetTsv(filepath string,suppressRowError bool) ([]TimeEvent,error) {
     var file *os.File
     var e error
     file,e=os.Open(filepath)
+    defer file.Close()
 
     if e!=nil {
         fmt.Println("failed to open sheet tsv:",filepath)

@@ -47,6 +47,8 @@ func main() {
             return e
         }
 
+        time_stats.AddDateTags(timeEvents)
+
         timeEvents=time_stats.FilterEvents(
             timeEvents,
             time_stats.TagFiltersListToDict(body.Filters),
@@ -56,8 +58,6 @@ func main() {
             fmt.Println("filter resulted in no events")
             return fmt.Errorf("no events")
         }
-
-        time_stats.AddDateTags(timeEvents)
 
         var analysis time_stats.TimeEventAnalysis=time_stats.AnalyseTimeEvents(timeEvents)
 
