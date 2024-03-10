@@ -6,10 +6,10 @@ cd $HERE
 
 tmux rename-window spawn
 
-# run server
-tmux new-window -n run -c $HERE
-tmux send "bash run-server.sh" Enter
-
 # run web build
-tmux split-window -h -c $HERE/time-stats-web
+tmux new-window -n run -c $HERE/time-stats-web
 tmux send "pnpm watch" Enter
+
+# run server
+tmux split-window -h -c $HERE
+tmux send "bash run-server.sh" Enter
