@@ -60,8 +60,9 @@ type TimeEventAnalysis struct {
     TotalTime time.Duration `json:"totalTime"`
     AverageTime time.Duration `json:"averageTime"`
 
-    EarliestEventDate time.Time `json:"earliestEventDate"`
+    NumEvents int `json:"numEvents"`
 
+    EarliestEventDate time.Time `json:"earliestEventDate"`
     LatestEventData time.Time `json:"latestEventDate"`
 }
 

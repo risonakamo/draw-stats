@@ -23,6 +23,7 @@ func AnalyseTimeEvents(events []TimeEvent) TimeEventAnalysis {
         AverageTime: time.Duration(
             totalTime.Nanoseconds()/int64(len(events)),
         ),
+        NumEvents: len(events),
         EarliestEventDate: findEarliestEvent(events).Start,
         LatestEventData: findLatestEvent(events).Start,
     }
