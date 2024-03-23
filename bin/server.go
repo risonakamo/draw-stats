@@ -73,6 +73,33 @@ func main() {
         return c.JSON(response)
     })
 
+    // request to update a datafile. might do nothing if the datafile has no update url
+    app.Post("/update-data",func(c *fiber.Ctx) error {
+        var body time_stats.UpdateDataRequest
+        var err error=c.BodyParser(&body)
+
+        if err!=nil {
+            panic(err)
+        }
+
+        var datafiles datadir_v2.MetadataYamlV2=datadir_v2.ReadMetadataFileV2(metadataFile)
+
+        var datafile datadir_v2.DataFileInfo2
+        datafile,err=datadir_v2.FindDataFile(body.Filename,datafiles)
+
+        if err!=nil {
+            panic(err)
+        }
+
+        err=datadir_v2.FetchDataFile(datafile,dataDir)
+
+        if err!=nil {
+            panic(err)
+        }
+
+        return nil
+    })
+
 
     // --- static ---
     app.Static("/",filepath.Join(here,"../time-stats-web/build"))

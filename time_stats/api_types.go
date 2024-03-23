@@ -36,3 +36,8 @@ type GetDataResponse struct {
     TopAnalysis TimeEventAnalysis `json:"topAnalysis"`
     TagsAnalysis TagBreakdownsDict `json:"tagsAnalysis"`
 }
+
+// request to update a datafile
+type UpdateDataRequest struct {
+    Filename string `json:"filename"`
+}

@@ -31,10 +31,10 @@ func ReadMetadataFileV2(filepath string) MetadataYamlV2 {
 
 // given a target data file info and an output location, attempt to auto fetch
 // the data file and place it into the output dir.
-func FetchDataFile(datainfo DataFileInfo2,outputDir string) {
+func FetchDataFile(datainfo DataFileInfo2,outputDir string) error {
     if len(datainfo.MainSheetid)==0 || len(datainfo.SubSheetId)==0 {
         fmt.Println("did not fetch datafile from url, no url")
-        return
+        return nil
     }
 
     // https://docs.google.com/spreadsheets/d/1reD2OvNyl5Fkvs4LXNESuhRNTOQQtrtqU31njzGR-RY/export?format=tsv&gid=1780809564
@@ -44,10 +44,12 @@ func FetchDataFile(datainfo DataFileInfo2,outputDir string) {
         datainfo.SubSheetId,
     )
 
-    resp,err:=http.Get(sheetUrl)
+    var resp *http.Response
+    var err error
+    resp,err=http.Get(sheetUrl)
 
     if err!=nil {
-        panic(err)
+        return err
     }
 
     defer resp.Body.Close()
@@ -59,17 +61,31 @@ func FetchDataFile(datainfo DataFileInfo2,outputDir string) {
     }
 
     var outputFile string=path.Join(outputDir,datainfo.Filename)
-    wfile,err:=os.Create(outputFile)
+    var wfile *os.File
+    wfile,err=os.Create(outputFile)
 
     if err!=nil {
-        panic(err)
+        return err
     }
 
     _,err=io.Copy(wfile,resp.Body)
 
     if err!=nil {
-        panic(err)
+        return err
     }
 
     fmt.Println("saved file:",outputFile)
+    return nil
+}
+
+// try to find a datafile by filename in a list of datafiles. return error if fails.
+// if multiple datafiles with the same name exist, returns the first one
+func FindDataFile(filename string,datafiles MetadataYamlV2) (DataFileInfo2,error) {
+    for i := range datafiles {
+        if datafiles[i].Filename==filename {
+            return datafiles[i],nil
+        }
+    }
+
+    return DataFileInfo2{},fmt.Errorf("failed to find datafile: %s",filename)
 }
