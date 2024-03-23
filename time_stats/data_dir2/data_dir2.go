@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path"
+	"path/filepath"
 
 	"gopkg.in/yaml.v3"
 )
@@ -57,10 +57,10 @@ func FetchDataFile(datainfo DataFileInfo2,outputDir string) error {
     if resp.StatusCode!=200 {
         fmt.Println("response status code was not 200")
         fmt.Println("got this status instead:",resp.StatusCode)
-        panic("bad status code")
+        return fmt.Errorf("bad status code")
     }
 
-    var outputFile string=path.Join(outputDir,datainfo.Filename)
+    var outputFile string=filepath.Join(outputDir,datainfo.Filename)
     var wfile *os.File
     wfile,err=os.Create(outputFile)
 
