@@ -10,14 +10,14 @@ type MetadataYamlV2 []DataFileInfo2
 // information about a single data file
 type DataFileInfo2 struct {
     // should include the file extension
-    Filename string `yaml:"filename"`
-    DisplayName string `yaml:"displayName"`
+    Filename string `yaml:"filename" json:"filename"`
+    DisplayName string `yaml:"displayName" json:"displayName"`
 
     // details for google sheets url. if either is empty, this feature
     // is disabled
     // the big main part of the sheet url. lets you access the sheet
-    MainSheetid string `yaml:"mainSheetId"`
+    MainSheetid string `yaml:"mainSheetId" json:"mainSheetId"`
     // called the GID in the url. lets you choose one of the sub-sheets
     // that make up a main sheet
-    SubSheetId string `yaml:"subSheetId"`
+    SubSheetId string `yaml:"subSheetId" json:"subSheetId"`
 }

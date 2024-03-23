@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"time-stats/time_stats"
+	datadir_v2 "time-stats/time_stats/data_dir2"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,6 +14,7 @@ func main() {
 	var here string=getHereDir()
 
     var dataDir string=filepath.Join(here,"../data")
+    var metadataFile string=filepath.Join(here,"../data/metadata_v2.yml")
 
     var app *fiber.App=fiber.New(fiber.Config{
         CaseSensitive:true,
@@ -23,7 +25,7 @@ func main() {
     // --- apis ---
     // return list of available data files
     app.Get("/data-names",func (c *fiber.Ctx) error {
-        var datalist []time_stats.DataFileInfo=time_stats.GetDataList(dataDir)
+        var datalist []datadir_v2.DataFileInfo2=datadir_v2.ReadMetadataFileV2(metadataFile)
 
         return c.JSON(datalist)
     })
