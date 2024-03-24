@@ -14,7 +14,7 @@ type DataFileInfo2 struct {
     DisplayName string `yaml:"displayName" json:"displayName"`
 
     // full url to google sheets page for this data file
-    SheetsUrl string `yaml:"sheetsUrl" json:"sheetsUrl"`
+    SheetsUrl string `yaml:"sheetUrl" json:"sheetUrl"`
 }
 
 // info extracted from a google sheets url
