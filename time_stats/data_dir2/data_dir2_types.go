@@ -13,11 +13,16 @@ type DataFileInfo2 struct {
     Filename string `yaml:"filename" json:"filename"`
     DisplayName string `yaml:"displayName" json:"displayName"`
 
-    // details for google sheets url. if either is empty, this feature
-    // is disabled
+    // full url to google sheets page for this data file
+    SheetsUrl string `yaml:"sheetsUrl" json:"sheetsUrl"`
+}
+
+// info extracted from a google sheets url
+type SheetsUrlInfo struct {
     // the big main part of the sheet url. lets you access the sheet
-    MainSheetid string `yaml:"mainSheetId" json:"mainSheetId"`
+    MainSheetid string
+
     // called the GID in the url. lets you choose one of the sub-sheets
     // that make up a main sheet
-    SubSheetId string `yaml:"subSheetId" json:"subSheetId"`
+    SubSheetId string
 }

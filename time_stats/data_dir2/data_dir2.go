@@ -32,16 +32,17 @@ func ReadMetadataFileV2(filepath string) MetadataYamlV2 {
 // given a target data file info and an output location, attempt to auto fetch
 // the data file and place it into the output dir.
 func FetchDataFile(datainfo DataFileInfo2,outputDir string) error {
-    if len(datainfo.MainSheetid)==0 || len(datainfo.SubSheetId)==0 {
+    if len(datainfo.SheetsUrl)==0 {
         fmt.Println("did not fetch datafile from url, no url")
         return nil
     }
 
-    // https://docs.google.com/spreadsheets/d/1reD2OvNyl5Fkvs4LXNESuhRNTOQQtrtqU31njzGR-RY/export?format=tsv&gid=1780809564
+    var extractedSheetInfo SheetsUrlInfo=extractSheetsInfo(datainfo.SheetsUrl)
+
     var sheetUrl string=fmt.Sprintf(
         "https://docs.google.com/spreadsheets/d/%s/export?format=tsv&gid=%s",
-        datainfo.MainSheetid,
-        datainfo.SubSheetId,
+        extractedSheetInfo.MainSheetid,
+        extractedSheetInfo.SubSheetId,
     )
 
     var resp *http.Response
