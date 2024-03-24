@@ -9,9 +9,9 @@ import (
 
 // extract from a google sheets url the info
 func extractSheetsInfo(url string) SheetsUrlInfo {
-    reg:=regexp.MustCompile(`spreadsheets/d\/(.*?)\/edit#gid=(\d*)`)
+    var reg *regexp.Regexp=regexp.MustCompile(`spreadsheets/d\/(.*?)\/edit#gid=(\d*)`)
 
-    match:=reg.FindStringSubmatch(url)
+    var match []string=reg.FindStringSubmatch(url)
 
     if len(match)!=3 {
         fmt.Println("failed to extract sheet url, wrong number of matches")
