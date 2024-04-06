@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -22,7 +23,7 @@ func main() {
     })
 
     var dataDir string=filepath.Join(here,"../data")
-    var metadataFile string=filepath.Join(here,"../data/metadata_v2.yml")
+    var metadataFile string=filepath.Join(here,"../data/config.yml")
 
     var app *fiber.App=fiber.New(fiber.Config{
         CaseSensitive:true,
@@ -54,8 +55,13 @@ func main() {
         timeEvents,e=time_stats.ParseSheetTsv(fullFilePath,true)
 
         if e!=nil {
-            fmt.Println("failed to parse sheet tsv")
-            return e
+            if os.IsNotExist(e) {
+                logrus.Warn("failed to parse sheet tsv")
+                logrus.Warn(e)
+                return e
+            }
+
+            panic(e)
         }
 
         time_stats.AddDateTags(timeEvents)

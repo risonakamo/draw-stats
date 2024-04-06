@@ -25,12 +25,13 @@ func ParseSheetTsv(filepath string,suppressRowError bool) ([]TimeEvent,error) {
     var file *os.File
     var e error
     file,e=os.Open(filepath)
-    defer file.Close()
 
     if e!=nil {
         fmt.Println("failed to open sheet tsv:",filepath)
-        return []TimeEvent{},fmt.Errorf("failed to open sheet tsv: %v",e)
+        return []TimeEvent{},e
     }
+
+    defer file.Close()
 
     var reader *csv.Reader=csv.NewReader(file)
     reader.Comma='\t'
