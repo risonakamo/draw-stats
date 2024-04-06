@@ -49,6 +49,14 @@ func main() {
             panic(e)
         }
 
+        // try to download the file if it doesnt exist
+        datadir_v2.TryUpdateDatafile(
+            metadataFile,
+            body.Filename,
+            dataDir,
+            true,
+        )
+
         var fullFilePath string=filepath.Join(dataDir,body.Filename)
 
         var timeEvents []time_stats.TimeEvent
@@ -97,20 +105,12 @@ func main() {
             panic(err)
         }
 
-        var datafiles datadir_v2.MetadataYamlV2=datadir_v2.ReadMetadataFileV2(metadataFile)
-
-        var datafile datadir_v2.DataFileInfo2
-        datafile,err=datadir_v2.FindDataFile(body.Filename,datafiles)
-
-        if err!=nil {
-            panic(err)
-        }
-
-        err=datadir_v2.FetchDataFile(datafile,dataDir)
-
-        if err!=nil {
-            panic(err)
-        }
+        datadir_v2.TryUpdateDatafile(
+            metadataFile,
+            body.Filename,
+            dataDir,
+            false,
+        )
 
         return nil
     })

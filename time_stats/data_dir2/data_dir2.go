@@ -93,3 +93,43 @@ func FindDataFile(filename string,datafiles MetadataYamlV2) (DataFileInfo2,error
 
     return DataFileInfo2{},fmt.Errorf("failed to find datafile: %s",filename)
 }
+
+// try to update the target filename, using the metadatafile.
+// set skipIfExists to skip if it exists, useful for trying to initialise the
+// file instead of updating it
+func TryUpdateDatafile(
+    metadataFile string,
+    filename string,
+    dataDir string,
+    skipIfExists bool,
+) error {
+    var e error
+
+    if skipIfExists {
+        _,e=os.Stat(filepath.Join(dataDir,filename))
+
+        if !os.IsNotExist(e) {
+            return nil
+        }
+    }
+
+    // read metadata file for urls
+    var datafiles MetadataYamlV2=ReadMetadataFileV2(metadataFile)
+
+    // given the filename, find the info for the target file
+    var datafile DataFileInfo2
+    datafile,e=FindDataFile(filename,datafiles)
+
+    if e!=nil {
+        panic(e)
+    }
+
+    // try to fetch the file
+    e=FetchDataFile(datafile,dataDir)
+
+    if e!=nil {
+        panic(e)
+    }
+
+    return nil
+}
