@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 )
 
@@ -20,7 +21,9 @@ func ReadMetadataFileV2(filepath string) MetadataYamlV2 {
     data,e=os.ReadFile(filepath)
 
     if e!=nil {
-        panic(e)
+        logrus.Warn("failed to read metadata file")
+        logrus.Warn("the error:",e)
+        return MetadataYamlV2{}
     }
 
     var parsedData MetadataYamlV2

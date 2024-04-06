@@ -2,16 +2,24 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"time-stats/time_stats"
 	datadir_v2 "time-stats/time_stats/data_dir2"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 )
+
+const LISTEN_PORT int=4200
 
 func main() {
 	var here string=getHereDir()
+
+    logrus.SetFormatter(&logrus.TextFormatter{
+        ForceColors: true,
+    })
 
     var dataDir string=filepath.Join(here,"../data")
     var metadataFile string=filepath.Join(here,"../data/metadata_v2.yml")
@@ -20,6 +28,7 @@ func main() {
         CaseSensitive:true,
         EnablePrintRoutes:false,
     })
+
 
 
     // --- apis ---
@@ -104,6 +113,7 @@ func main() {
     // --- static ---
     app.Static("/",filepath.Join(here,"../time-stats-web/build"))
 
+    openChrome(fmt.Sprintf("http://localhost:%d",LISTEN_PORT))
     app.Listen(":4200")
 }
 
@@ -113,4 +123,15 @@ func getHereDir() string {
     _,selfFilepath,_,_=runtime.Caller(0)
 
     return filepath.Dir(selfFilepath)
+}
+
+// try to open chrome to the specified url
+func openChrome(url string) {
+    var cmd *exec.Cmd=exec.Command("chrome.exe",url)
+    var err error=cmd.Run()
+
+    if err!=nil {
+        logrus.Warn("failed to open chrome")
+        logrus.Warn(err)
+    }
 }
